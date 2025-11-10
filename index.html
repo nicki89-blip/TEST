@@ -2,21 +2,20 @@
 <html lang="sl">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>Anki Kartice - Angleščina</title>
-
-  <!-- Povezava na zunanji CSS -->
   <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
   <div class="container">
     <div class="header">
-      <h1>🎓 Anki Kartice - Angleščina</h1>
+      <h1>🎓 Anki Kartice – Angleščina</h1>
+
       <div class="dataset-picker">
         <label for="dataset">Naloži nabor:</label>
         <select id="dataset" class="select" title="Izberi nabor kartic"></select>
-        <button id="reloadBtn" class="reload" title="Ponovno naloži izbrani nabor">Naloži</button>
+        <button id="reloadBtn" class="btn reload" title="Ponovno naloži izbrani nabor">Naloži</button>
       </div>
     </div>
 
@@ -24,21 +23,22 @@
       <div class="progress-bar" id="progressBar">0%</div>
     </div>
 
-    <div class="main-content">
-      <div class="card-section">
+    <div class="main">
+      <!-- LEVO: karta + kontrole -->
+      <section class="work">
         <div class="card-counter" id="cardCounter">Kartica 0 od 0</div>
 
-        <div id="cardContainer" class="card-container">
-          <div class="card" id="flashcard">
+        <div id="cardContainer" class="card-container" aria-live="polite">
+          <div class="card" id="flashcard" tabindex="0" aria-label="kartica (presledek za obrat)">
             <div class="card-face card-front" id="cardFront">Izberi nabor in klikni “Naloži”</div>
             <div class="card-face card-back" id="cardBack">🙂</div>
           </div>
         </div>
 
-        <div id="noCardsMessage" class="no-cards" style="display:none;">
+        <div id="noCardsMessage" class="no-cards" hidden>
           <h3>🎉 Odlično!</h3>
           <p>Ni več kartic za prikaz v tem filtru.</p>
-          <p>Izberite drug filter ali nadaljujte z učenjem!</p>
+          <p>Izberi drug filter ali nadaljuj z učenjem.</p>
         </div>
 
         <div class="controls">
@@ -46,36 +46,36 @@
           <button class="btn btn-nav" id="nextBtn" disabled>Naslednja ➡️</button>
         </div>
 
-        <div class="knowledge-buttons">
-          <button class="btn btn-know" id="knowBtn" disabled>✅ Znam</button>
-          <button class="btn btn-partial" id="partialBtn" disabled>😐 Delno</button>
-          <button class="btn btn-unknown" id="unknownBtn" disabled>🚫 Ne znam</button>
+        <div class="knowledge">
+          <button class="btn know"    id="knowBtn"    disabled>✅ Znam (1)</button>
+          <button class="btn partial" id="partialBtn" disabled>😐 Delno (2)</button>
+          <button class="btn unknown" id="unknownBtn" disabled>🚫 Ne znam (3)</button>
         </div>
 
-        <div class="keyboard-hint">
-          💡 Puščice za navigacijo, presledek za obračanje kartice (1=Znam, 2=Delno, 3=Ne znam)
-        </div>
-      </div>
+        <p class="hint">Tipke: ← → za premik, ␣ za obrat, 1/2/3 za oceno.</p>
+      </section>
 
-      <div class="sidebar">
+      <!-- DESNO: filtri + statistika -->
+      <aside class="sidebar">
         <h3>🎯 Filtri</h3>
-        <button class="filter-btn active" data-filter="all">📚 Vse kartice</button>
-        <button class="filter-btn" data-filter="partial">😐 Delno znam</button>
-        <button class="filter-btn" data-filter="unknown">🚫 Ne znam</button>
+        <div class="filters">
+          <button class="filter-btn active" data-filter="all">📚 Vse kartice</button>
+          <button class="filter-btn" data-filter="partial">😐 Delno znam</button>
+          <button class="filter-btn" data-filter="unknown">🚫 Ne znam</button>
+        </div>
 
         <div class="stats">
-          <h3>📊 Statistike</h3>
-          <div class="stat-item"><span>Skupaj kartic:</span><span id="totalCards">0</span></div>
-          <div class="stat-item"><span>✅ Znam:</span><span id="knownCards">0</span></div>
-          <div class="stat-item"><span>😐 Delno:</span><span id="partialCards">0</span></div>
-          <div class="stat-item"><span>🚫 Ne znam:</span><span id="unknownCards">0</span></div>
-          <div class="stat-item"><span><strong>Uspeh:</strong></span><span id="successRate"><strong>0%</strong></span></div>
+          <h3>📊 Statistika</h3>
+          <div class="stat"><span>Skupaj:</span> <strong id="totalCards">0</strong></div>
+          <div class="stat"><span>✅ Znam:</span> <strong id="knownCards">0</strong></div>
+          <div class="stat"><span>😐 Delno:</span> <strong id="partialCards">0</strong></div>
+          <div class="stat"><span>🚫 Ne znam:</span> <strong id="unknownCards">0</strong></div>
+          <div class="stat big"><span>Uspeh:</span> <strong id="successRate">0%</strong></div>
         </div>
-      </div>
+      </aside>
     </div>
   </div>
 
-  <!-- Povezava na zunanji JavaScript -->
   <script src="script.js"></script>
 </body>
 </html>
