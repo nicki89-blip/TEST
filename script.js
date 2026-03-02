@@ -210,23 +210,28 @@ async function fetchWikiImage(searchTerm) {
 
 async function maybeShowCardImage(card) {
   const imgEl = document.getElementById('cardImage');
+  const faceEl = document.getElementById('cardFront');
   if (!imgEl) return;
-  // Only show images for druzba subject
-  if (currentSubject !== 'druzba') {
+  
+  // Hide image if not in druzba or no image term exists
+  if (currentSubject !== 'druzba' || !card.image) {
     imgEl.style.display = 'none';
+    autoFitCardText(faceEl); // Make sure text fits without image
     return;
   }
-  // Use explicit image field if set, otherwise no image
-  const searchTerm = card.image || null;
-  if (!searchTerm) {
-    imgEl.style.display = 'none';
-    return;
-  }
+  
   imgEl.style.display = 'none'; // hide while loading
-  const src = await fetchWikiImage(searchTerm);
+  const src = await fetchWikiImage(card.image);
+  
   if (src) {
+    // Wait for the image to actually load its dimensions, THEN resize the text
+    imgEl.onload = () => {
+      autoFitCardText(faceEl);
+    };
     imgEl.src = src;
     imgEl.style.display = 'block';
+  } else {
+    autoFitCardText(faceEl);
   }
 }
 
@@ -235,12 +240,13 @@ function autoFitCardText(faceEl) {
   const span = faceEl.querySelector('.card-text');
   if (!span) return;
   if (faceEl.clientHeight === 0) return; // not rendered yet, skip
+  
   span.style.fontSize = '';  // reset to CSS default first
-  const maxHeight = faceEl.clientHeight - 60; // 26px padding top+bottom + buffer for flip-hint
-  if (span.scrollHeight <= maxHeight) return;  // already fits, do nothing
   let size = 1.75; // match CSS default font-size on .card-face
   span.style.fontSize = size + 'rem';
-  while (span.scrollHeight > maxHeight && size > 0.85) {
+  
+  // Keep shrinking the text as long as the content overflows the card
+  while (faceEl.scrollHeight > faceEl.clientHeight && size > 0.80) {
     size -= 0.05;
     span.style.fontSize = size + 'rem';
   }
