@@ -111,7 +111,7 @@
   {
     "question": "Kaj je to ribniška suha roba?",
     "answer": "Ribničani so izkoriščali les in izdelovali lesene izdelke (zobotrebci, sita,vedra, rešeta, jedini pribor). Naložili so jih v velike koše in prodajali po svetu.",
-    "image": "Ribnica woodcraft dry goods Slovenia"
+    "image": "Woodcraft Slovenia"
   },
   {
     "question": "Kaj so to belokranjske pisanice?",
@@ -145,8 +145,8 @@
   },
   {
     "question": "Kaj vse zajema vodovje v Obsredozemskih pokrajinah?",
-    "answer": "Glavni vlogo ima morje, največja reka je Soča, ki se zliva v Tržaški zaliv. Ostale reke so Vipava, Rižana in Dragonja.",
-    "image": "Soča river Slovenia turquoise"
+    "answer": "Glavno vlogo ima morje, največja reka je Soča, ki se zliva v Tržaški zaliv. Ostale reke so Vipava, Rižana in Dragonja.",
+    "image": "Soča river"
   },
   {
     "question": "Kakšno je rastlinstvo v Obsredozemskih pokrajinah?",
@@ -241,6 +241,6 @@
   {
     "question": "Kaj veš o smučanju na Blokah?",
     "answer": "Ljudje so včasih potrebovali smuči, da so odhajali v šolo, po nakupih, po moko v mlin, v gozd po drva in k maši.",
-    "image": "Bloke plateau skiing Slovenia traditional"
+    "image": "Skiing Slovenia traditional"
   }
 ]
