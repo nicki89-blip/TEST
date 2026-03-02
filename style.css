@@ -906,7 +906,7 @@ html { height: 100%; }
   :root { --panel-width: 100%; }
   .toolbar { padding: 7px 10px; gap: 8px; }
   .brand { font-size: 1.1rem; }
-  .card { height: 185px; }
+  .card { height: 350px; }
   .card-face { font-size: 1.25rem; padding: 18px; }
   .btn { padding: 13px 8px; font-size: 0.88rem; }
   .quiz-question-text { font-size: 1.3rem; }
@@ -918,7 +918,7 @@ html { height: 100%; }
 }
 
 @media (max-width: 400px) {
-  .card { height: 165px; }
+  .card { height: 320px; }
   .card-face { font-size: 1.1rem; padding: 14px; }
   .quiz-options { grid-template-columns: 1fr; }
   .toolbar-controls { gap: 6px; }
