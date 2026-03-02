@@ -470,7 +470,7 @@ html { height: 100%; }
 .card-image {
   display: block;
   max-width: 85%;
-  max-height: 210px;
+  max-height: 140px;
   object-fit: cover;
   border-radius: 10px;
   margin-bottom: 10px;
@@ -906,7 +906,7 @@ html { height: 100%; }
   :root { --panel-width: 100%; }
   .toolbar { padding: 7px 10px; gap: 8px; }
   .brand { font-size: 1.1rem; }
-  .card { height: 350px; }
+  .card { height: 340px; }
   .card-face { font-size: 1.25rem; padding: 18px; }
   .btn { padding: 13px 8px; font-size: 0.88rem; }
   .quiz-question-text { font-size: 1.3rem; }
