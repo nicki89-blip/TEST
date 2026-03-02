@@ -298,7 +298,14 @@ function applyFilters() {
     const valSlo = item.question ?? item.slovenian ?? "";
     const valEng = item.answer   ?? item.english   ?? "";
     const isSloToEng = Math.random() < 0.5;
-    return { id: index, front: isSloToEng ? valSlo : valEng, back: isSloToEng ? valEng : valSlo, english: valEng, isSloToEng };
+    return { 
+      id: index, 
+      front: isSloToEng ? valSlo : valEng, 
+      back: isSloToEng ? valEng : valSlo, 
+      english: valEng, 
+      isSloToEng,
+      image: item.image // <-- We added this!
+    };
   });
   return shuffle(finalCards);
 }
