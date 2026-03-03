@@ -12,7 +12,7 @@
 body {
   margin: 0; padding: 0;
   font-family: 'Source Sans 3', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, #00897b 0%, #006064 100%);
   min-height: 100%;
   overflow-x: hidden;
 }
