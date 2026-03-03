@@ -469,12 +469,12 @@ html { height: 100%; }
 .card-text { display: block; width: 100%; text-align: center; }
 .card-image {
   display: block;
-  max-width: 85%;
-  max-height: 140px;
+  max-width: 70%;
+  max-height: 80px;
   object-fit: cover;
-  border-radius: 10px;
-  margin-bottom: 10px;
-  box-shadow: 0 4px 14px rgba(0,0,0,0.22);
+  border-radius: 8px;
+  margin-bottom: 8px;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.18);
   flex-shrink: 0;
 }
 .card-front .flip-hint { color: #555; }

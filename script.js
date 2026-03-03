@@ -212,20 +212,23 @@ async function maybeShowCardImage(card) {
   const imgEl = document.getElementById('cardImage');
   const faceEl = document.getElementById('cardFront');
   if (!imgEl) return;
-  
-  // Hide image if not in druzba or no image term exists
+
+  // Hide image if not druzba subject or no image term
   if (currentSubject !== 'druzba' || !card.image) {
     imgEl.style.display = 'none';
-    autoFitCardText(faceEl); // Make sure text fits without image
+    imgEl.src = '';
+    autoFitCardText(faceEl);
     return;
   }
-  
+
   imgEl.style.display = 'none'; // hide while loading
+  imgEl.src = '';
   const src = await fetchWikiImage(card.image);
-  
+
   if (src) {
-    // Wait for the image to actually load its dimensions, THEN resize the text
-    imgEl.onload = () => {
+    imgEl.onload = () => autoFitCardText(faceEl);
+    imgEl.onerror = () => {
+      imgEl.style.display = 'none';
       autoFitCardText(faceEl);
     };
     imgEl.src = src;
@@ -240,14 +243,22 @@ function autoFitCardText(faceEl) {
   const span = faceEl.querySelector('.card-text');
   if (!span) return;
   if (faceEl.clientHeight === 0) return; // not rendered yet, skip
-  
-  span.style.fontSize = '';  // reset to CSS default first
-  let size = 1.75; // match CSS default font-size on .card-face
-  span.style.fontSize = size + 'rem';
-  
-  // Keep shrinking the text as long as the content overflows the card
-  while (faceEl.scrollHeight > faceEl.clientHeight && size > 0.80) {
-    size -= 0.05;
+
+  // Check if an image is currently visible — if so, start smaller
+  const imgEl = faceEl.querySelector('.card-image');
+  const hasImage = imgEl && imgEl.style.display !== 'none' && imgEl.src;
+  const startSize = hasImage ? 1.3 : 1.75;
+
+  span.style.fontSize = startSize + 'rem';
+
+  // Available height = card height minus padding (26px×2) minus flip-hint area (30px)
+  const padding = parseInt(getComputedStyle(faceEl).paddingTop || '26') * 2;
+  const maxHeight = faceEl.clientHeight - padding - 30;
+
+  // Shrink until text fits
+  let size = startSize;
+  while (span.scrollHeight > maxHeight && size > 0.78) {
+    size -= 0.04;
     span.style.fontSize = size + 'rem';
   }
 }
