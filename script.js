@@ -212,23 +212,20 @@ async function maybeShowCardImage(card) {
   const imgEl = document.getElementById('cardImage');
   const faceEl = document.getElementById('cardFront');
   if (!imgEl) return;
-
-  // Hide image if not druzba subject or no image term
+  
+  // Hide image if not in druzba or no image term exists
   if (currentSubject !== 'druzba' || !card.image) {
     imgEl.style.display = 'none';
-    imgEl.src = '';
-    autoFitCardText(faceEl);
+    autoFitCardText(faceEl); // Make sure text fits without image
     return;
   }
-
+  
   imgEl.style.display = 'none'; // hide while loading
-  imgEl.src = '';
   const src = await fetchWikiImage(card.image);
-
+  
   if (src) {
-    imgEl.onload = () => autoFitCardText(faceEl);
-    imgEl.onerror = () => {
-      imgEl.style.display = 'none';
+    // Wait for the image to actually load its dimensions, THEN resize the text
+    imgEl.onload = () => {
       autoFitCardText(faceEl);
     };
     imgEl.src = src;
@@ -242,24 +239,53 @@ function autoFitCardText(faceEl) {
   if (!faceEl) return;
   const span = faceEl.querySelector('.card-text');
   if (!span) return;
-  if (faceEl.clientHeight === 0) return; // not rendered yet, skip
+  if (faceEl.clientHeight === 0) return;
 
-  // Check if an image is currently visible — if so, start smaller
-  const imgEl = faceEl.querySelector('.card-image');
+  const imgEl   = faceEl.querySelector('.card-image');
   const hasImage = imgEl && imgEl.style.display !== 'none' && imgEl.src;
-  const startSize = hasImage ? 1.3 : 1.75;
+  const padTop   = parseInt(getComputedStyle(faceEl).paddingTop)  || 26;
+  const padBot   = parseInt(getComputedStyle(faceEl).paddingBottom) || 26;
+  const flipHint = 30; // space reserved for "klikni za obrat"
+  const available = faceEl.clientHeight - padTop - padBot - flipHint;
 
-  span.style.fontSize = startSize + 'rem';
+  if (hasImage) {
+    // Give image up to 45% of available space, text gets the rest
+    const imgMax  = Math.floor(available * 0.45);
+    const textMax = available - imgMax - 10; // 10px gap between image and text
 
-  // Available height = card height minus padding (26px×2) minus flip-hint area (30px)
-  const padding = parseInt(getComputedStyle(faceEl).paddingTop || '26') * 2;
-  const maxHeight = faceEl.clientHeight - padding - 30;
+    // Scale image: grow or shrink to fill its allocation
+    imgEl.style.maxHeight = imgMax + 'px';
+    imgEl.style.maxWidth  = '75%';
 
-  // Shrink until text fits
-  let size = startSize;
-  while (span.scrollHeight > maxHeight && size > 0.78) {
-    size -= 0.04;
+    // Scale text to fill its allocation — try growing first, then shrink if needed
+    let size = 2.2;
     span.style.fontSize = size + 'rem';
+    // Shrink if overflowing text area
+    while (span.scrollHeight > textMax && size > 0.78) {
+      size -= 0.04;
+      span.style.fontSize = size + 'rem';
+    }
+    // Grow if there's room to spare
+    while (span.scrollHeight < textMax * 0.75 && size < 2.2) {
+      size += 0.04;
+      span.style.fontSize = size + 'rem';
+      if (span.scrollHeight > textMax) { size -= 0.04; span.style.fontSize = size + 'rem'; break; }
+    }
+  } else {
+    // No image — text fills everything, scale up or down freely
+    let size = 2.5;
+    span.style.fontSize = size + 'rem';
+    // Shrink if overflowing
+    while (span.scrollHeight > available && size > 0.78) {
+      size -= 0.04;
+      span.style.fontSize = size + 'rem';
+    }
+    // Grow if there's lots of room (short words should be big)
+    while (span.scrollHeight < available * 0.65 && size < 2.8) {
+      size += 0.04;
+      span.style.fontSize = size + 'rem';
+      if (span.scrollHeight > available) { size -= 0.04; span.style.fontSize = size + 'rem'; break; }
+    }
   }
 }
 
